@@ -1,16 +1,16 @@
 import { Link } from "react-router-dom"
 
-const Lounge = () => {
+const Ventas = () => {
     return (
         <section>
-            <h1>The Lounge</h1>
+            <h1>Ventas</h1>
             <br />
-            <p>Admins and Editors can hang out here.</p>
+            <p>Página de gestión de Ventas</p>
             <div className="flexGrow">
-                <Link to="/">Home</Link>
+                <Link to="/">Volver al Menú</Link>
             </div>
         </section>
     )
 }
 
-export default Lounge
+export default Ventas

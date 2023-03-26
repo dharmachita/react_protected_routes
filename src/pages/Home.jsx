@@ -10,24 +10,25 @@ const Home = () => {
         // if used in more components, this should be in context 
         // axios to /logout endpoint 
         setAuth({});
-        navigate('/linkpage');
+        navigate('/login');
     }
 
     return (
         <section>
-            <h1>Home</h1>
+            <h1>Menú</h1>
             <br />
-            <p>You are logged in!</p>
+            <Link to="/clientes">Clientes</Link>
             <br />
-            <Link to="/editor">Go to the Editor page</Link>
+            <Link to="/productos">Productos</Link>
             <br />
-            <Link to="/admin">Go to the Admin page</Link>
+            <Link to="/ventas">Ventas</Link>
             <br />
-            <Link to="/lounge">Go to the Lounge</Link>
+            <Link to="/configuraciones">Configuraciones</Link>
             <br />
-            <Link to="/linkpage">Go to the link page</Link>
+            <Link to="/users">Users</Link>
+            <br />
             <div className="flexGrow">
-                <button onClick={logout}>Sign Out</button>
+                <button onClick={logout}>Cerrar Sesión</button>
             </div>
         </section>
     )

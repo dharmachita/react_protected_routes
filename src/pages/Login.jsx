@@ -1,9 +1,9 @@
 import { useRef, useState, useEffect } from 'react';
 import useAuth from '../hooks/useAuth';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 import axios from '../api/axios';
-const LOGIN_URL = '/auth';
+const LOGIN_URL = '/auth/login';
 
 const Login = () => {
     const { setAuth } = useAuth();
@@ -32,29 +32,28 @@ const Login = () => {
 
         try {
             const response = await axios.post(LOGIN_URL,
-                JSON.stringify({ user, pwd }),
+                JSON.stringify({ username:user, password:pwd }),
                 {
                     headers: { 'Content-Type': 'application/json' },
                     withCredentials: true
                 }
             );
-            console.log(JSON.stringify(response?.data));
+            //console.log(JSON.stringify(response?.data));
             //console.log(JSON.stringify(response));
-            const accessToken = response?.data?.accessToken;
-            const roles = response?.data?.roles;
+            const accessToken = response?.data?.data?.token;
+            const roles = response?.data?.data?.user?.Roles.map(rol=>rol.name);
             setAuth({ user, pwd, roles, accessToken });
             setUser('');
             setPwd('');
             navigate(from, { replace: true });
         } catch (err) {
             if (!err?.response) {
-                setErrMsg('No Server Response');
-            } else if (err.response?.status === 400) {
-                setErrMsg('Missing Username or Password');
-            } else if (err.response?.status === 401) {
-                setErrMsg('Unauthorized');
+                setErrMsg('El Servidor no responde');
+                //console.log(err)
+            } else if (err.response?.status === 400 | err.response?.status === 401) {
+                setErrMsg('Usuario o Contraseña inválidos');
             } else {
-                setErrMsg('Login Failed');
+                setErrMsg('Error al iniciar sesión');
             }
             errRef.current.focus();
         }
@@ -64,9 +63,9 @@ const Login = () => {
 
         <section>
             <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p>
-            <h1>Sign In</h1>
+            <h1>Iniciar Sesión</h1>
             <form onSubmit={handleSubmit}>
-                <label htmlFor="username">Username:</label>
+                <label htmlFor="username">Nombre de ususario</label>
                 <input
                     type="text"
                     id="username"
@@ -77,7 +76,7 @@ const Login = () => {
                     required
                 />
 
-                <label htmlFor="password">Password:</label>
+                <label htmlFor="password">Contraseña</label>
                 <input
                     type="password"
                     id="password"
@@ -85,14 +84,8 @@ const Login = () => {
                     value={pwd}
                     required
                 />
-                <button>Sign In</button>
+                <button>Ingresar</button>
             </form>
-            <p>
-                Need an Account?<br />
-                <span className="line">
-                    <Link to="/register">Sign Up</Link>
-                </span>
-            </p>
         </section>
 
     )
