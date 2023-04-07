@@ -44,6 +44,11 @@ export default function DetalleCliente() {
     const handleEdit=()=>{
         navigate('/clientes/editar', { state: { id,mode:'edit',editCustomer:customer }, replace: true });
     }
+
+    const handleRecategorizar=()=>{
+        navigate('/clientes/recategorizar', { state: { id,editCustomer:customer }, replace: true });
+    }
+
     return (
         <section>
             <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p>
@@ -60,7 +65,10 @@ export default function DetalleCliente() {
                         <p>Dirección: {customer?.address}</p>
                         <p>Ciudad: {customer?.City.name}</p>
                         <p>Referencia: {customer?.reference}</p>
-                        <br />
+                    <div className="flexGrow">
+                        <button onClick={handleEdit}>Editar</button>
+                    </div>
+                    <br />
                     <h3>Datos de Ventas</h3>
                     <br />
                         <p>Estado: {customer?.status}</p>
@@ -71,12 +79,11 @@ export default function DetalleCliente() {
                                     <li>{order.id}</li>
                                 )}             
                             </ul>
+                    <div className="flexGrow">
+                        <button onClick={handleRecategorizar}>Recategorizar</button>
+                    </div>
                     </>
             }
-            <br />
-            <div className="flexGrow">
-                <button onClick={handleEdit}>Editar</button>
-            </div>
             <br />
             <div className="flexGrow">
                 <Link to="/">Volver al Menú</Link>

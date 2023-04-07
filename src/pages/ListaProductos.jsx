@@ -4,9 +4,9 @@ import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import { Link,useNavigate } from 'react-router-dom';
 
 
-export default function ListaClientes() {
+export default function ListaProductos() {
     const errRef = useRef();
-    const [customers, setCustomers] = useState([]);
+    const [products, setProducts] = useState([]);
     const axiosPrivate = useAxiosPrivate();
     const [errMsg, setErrMsg] = useState('');
     const navigate=useNavigate();
@@ -19,13 +19,13 @@ export default function ListaClientes() {
 
         const getCustomers = async () => {
             try {
-                const response = await axiosPrivate.get('/customers', {
+                const response = await axiosPrivate.get('/products', {
                     signal: controller.signal
                 });
-                isMounted && setCustomers(response.data.data);
+                isMounted && setProducts(response.data.data);
             } catch (err) {
                 console.log(err)
-                setErrMsg('Error buscando clientes');
+                setErrMsg('Error buscando productos');
                 //navigate('/login', { state: { from: location }, replace: true });
             }
         }
@@ -43,10 +43,10 @@ export default function ListaClientes() {
         let isMounted = true;
         const controller = new AbortController();
         try {
-            await axiosPrivate.delete(`/customers/${id}`, {
+            await axiosPrivate.delete(`/products/${id}`, {
                 signal: controller.signal
             });
-            isMounted && setCustomers(customers.filter(customer => customer.id !== id));
+            isMounted && setProducts(products.filter(product => product.id !== id));
         } catch (err) {
             console.log(err)
             setErrMsg('Error buscando clientes');
@@ -54,45 +54,34 @@ export default function ListaClientes() {
         }
     }
 
-
     const handleDetail=(id)=>{
-        navigate('/clientes/detalle', { state: { id }, replace: true });
+        navigate('/productos/detalle', { state: { id }, replace: true });
     }
 
-    const handleRecategorizar=(customer)=>{
-        navigate('/clientes/recategorizar', { state: { id:customer.id,editCustomer:customer }, replace: true });
-    }
     return (
         <article>
             <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p>
-            <h2>Lista de Clientes</h2>
+            <h2>Lista de Productos</h2>
             <table>
               <thead>
                 <tr>
                   <th>Código</th>
-                  <th>Nombre y Apellido</th>
-                  <th>DNI</th>
-                  <th>Teléfono</th>
-                  <th>Estado</th>
-                  <th>Calificación</th>
-                  <th>Ciudad</th>
-                  <th>Acciones</th>
+                  <th>Producto</th>
+                  <th>Descripción</th>
+                  <th>Categoría</th>
+                  <th></th>
                 </tr>
               </thead>
               <tbody>
-                {customers?.map((customer,i)=>
+                {products?.map((product,i)=>
                     <tr key={i}>
-                      <th>{customer?.code}</th>
-                      <th>{customer?.name}</th>
-                      <th>{customer?.dni}</th>
-                      <th>{customer?.phone}</th>
-                      <th>{customer?.status}</th>
-                      <th>{customer?.Qualification?.description}-{customer?.Qualification?.score}</th>
-                      <th>{customer?.City.name}</th>
+                      <th>{product?.code}</th>
+                      <th>{product?.name}</th>
+                      <th>{product?.description}</th>
+                      <th>{product?.Category.name}</th>
                       <th>
-                        <button className='actionbutton' onClick={()=>handleDetail(customer.id)}>Ver</button>
-                        <button className='actionbutton' onClick={()=>handleRecategorizar(customer)}>Recategorizar</button>
-                        <button className='actionbutton' onClick={()=>handleDelete(customer.id)}>Eliminar</button>
+                        <button className='actionbutton' onClick={()=>handleDetail(product.id)}>Ver</button>
+                        <button className='actionbutton' onClick={()=>handleDelete(product.id)}>Eliminar</button>
                     </th>
                     </tr>
                   )}

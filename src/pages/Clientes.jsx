@@ -12,8 +12,6 @@ const Clientes = () => {
                 <br />
                 <Link to="nuevo">Alta de Cliente</Link>
                 <br />
-                <Link to="recategorizar">Recategorizar</Link>
-                <br />
             </div>
             <div className="flexGrow">
                 <Link to="/">Volver al Menú</Link>

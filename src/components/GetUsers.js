@@ -31,6 +31,7 @@ const GetUsers = () => {
             isMounted = false;
             controller.abort();
         }
+    // eslint-disable-next-line
     }, [])
 
     return (

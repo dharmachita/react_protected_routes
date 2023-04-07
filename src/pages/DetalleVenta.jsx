@@ -1,0 +1,94 @@
+import React from 'react'
+import { useState, useEffect,useRef } from "react";
+import useAxiosPrivate from "../hooks/useAxiosPrivate";
+import { Link } from 'react-router-dom';
+import { useLocation,useNavigate } from "react-router-dom";
+
+
+export default function DetalleCliente() {
+    const errRef = useRef();
+    const axiosPrivate = useAxiosPrivate();
+    const [errMsg, setErrMsg] = useState('');
+    const {state} = useLocation();
+    const { id } = state; 
+    const [product,setProduct]=useState(null);
+    const navigate=useNavigate();
+    
+    //Get Products
+    useEffect(() => {
+        let isMounted = true;
+        const controller = new AbortController();
+
+        const getCustomer = async () => {
+            try {
+                const response = await axiosPrivate.get(`/products/${id}`, {
+                    signal: controller.signal
+                });
+                isMounted && setProduct(response.data.data);
+            } catch (err) {
+                console.log(err)
+                setErrMsg('Error buscando clientes');
+                //navigate('/login', { state: { from: location }, replace: true });
+            }
+        }
+
+        getCustomer();
+        
+        return () => {
+            isMounted = false;
+            controller.abort();
+        }
+    // eslint-disable-next-line
+    }, [])
+
+    console.log(product);
+
+    const handleEdit=()=>{
+        navigate('/productos/editar', { state: { id,mode:'edit',editProduct:product }, replace: true });
+    }
+    return (
+        <section>
+            <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p>
+            <h2>Detalle de Producto <b>{product&&product?.code}</b></h2>
+            <br />
+            {
+                product&&
+                    <>
+                        <p>Producto: {product?.name}</p>
+                        <p>Categoría: {product?.Category?.name}</p>
+                        <p>Descripción: {product?.description}</p>
+                        <br />
+                        <table>
+                            <caption>Stock</caption>
+                            <thead>
+                                <tr>
+                                    <th>Tipo Stock</th>
+                                    <th>Cantidad</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {product?.Stocks.map((stock,i)=>
+                                    <tr key={i}>
+                                        <th>{stock.type}</th>
+                                        <th>{stock.quantity}</th>
+                                        <th><button className='actionbutton'>Editar</button></th>
+                                    </tr>
+                                )}
+                            </tbody>
+                        </table>
+                    </>
+            }
+            <br />
+            <div className="flexGrow">
+                <button onClick={handleEdit}>Editar</button>
+            </div>
+            <br />
+            <div className="flexGrow">
+                <Link to="/">Volver al Menú</Link>
+            </div>
+        </section>
+    );
+
+}
+

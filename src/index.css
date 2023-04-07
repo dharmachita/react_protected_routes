@@ -52,6 +52,8 @@ a, a:visited {
 input[type="text"],
 input[type="password"],
 input[type="phone"],
+input[type="date"],
+input[type="number"],
 select,
 button,
 textarea {
@@ -152,3 +154,16 @@ th, td {
 th {
    background: #eee;
 }
+caption {
+    padding: 0.3em;
+    color: #fff;
+     background: #000;
+ }
+
+ .actionbutton{
+    font-family: 'Nunito', sans-serif;
+    font-size: 15px;
+    padding: 0.2em;
+    border-radius: 0.5rem;
+    margin-top: 0.1rem;
+ }

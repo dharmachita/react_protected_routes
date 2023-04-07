@@ -21,11 +21,9 @@ const Home = () => {
             <br />
             <Link to="/productos">Productos</Link>
             <br />
-            <Link to="/ventas">Ventas</Link>
+            <Link to="/ventas">Ventas / Cobranzas</Link>
             <br />
             <Link to="/configuraciones">Configuraciones</Link>
-            <br />
-            <Link to="/users">Users</Link>
             <br />
             <div className="flexGrow">
                 <button onClick={logout}>Cerrar Sesión</button>
