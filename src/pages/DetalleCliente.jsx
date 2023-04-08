@@ -49,6 +49,10 @@ export default function DetalleCliente() {
         navigate('/clientes/recategorizar', { state: { id,editCustomer:customer }, replace: true });
     }
 
+    const handleHistory=()=>{
+        navigate('/clientes/historial', { state: { id,editCustomer:customer }, replace: true });   
+    }
+
     return (
         <section>
             <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p>
@@ -81,6 +85,9 @@ export default function DetalleCliente() {
                             </ul>
                     <div className="flexGrow">
                         <button onClick={handleRecategorizar}>Recategorizar</button>
+                    </div>
+                    <div className="flexGrow">
+                        <button onClick={handleHistory}>Ver Historial</button>
                     </div>
                     </>
             }

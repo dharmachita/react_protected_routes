@@ -46,7 +46,7 @@ export default function DetalleCliente() {
         navigate('/productos/editar', { state: { id,mode:'edit',editProduct:{...product,categoryId:product.Category.id} }, replace: true });
     }
     const handleAjustarStock=()=>{
-        alert("Ajustar stock")
+        navigate('/productos/stock', { state: { id,editProduct:product }, replace: true });
     }
 
     return (

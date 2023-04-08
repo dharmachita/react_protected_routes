@@ -17,6 +17,7 @@ import FormularioCliente from './pages/FormularioCliente';
 import ListaClientes from './pages/ListaClientes';
 import DetalleCliente from './pages/DetalleCliente';
 import FormularioRecat from './pages/FormularioRecat';
+import HistorialCliente from './pages/HistorialCliente';
 
 import Productos from './pages/Productos';
 import FormularioProducto from './pages/FormularioProducto';
@@ -25,6 +26,7 @@ import DetalleProducto from './pages/DetalleProducto';
 import FormularioCompra from './pages/FormularioCompra';
 import FormularioUpdStatus from './pages/FormularioUpdStatus';
 import ListaCompras from './pages/ListaCompras';
+import AjusteStock from './pages/AjusteStock';
 
 import Configuraciones from './pages/Configuraciones';
 import Users from './pages/Users';
@@ -50,6 +52,7 @@ function App() {
           <Route path="clientes/detalle" element={<DetalleCliente />} />
           <Route path="clientes/editar" element={<FormularioCliente />} />
           <Route path="clientes/recategorizar" element={<FormularioRecat />} />
+          <Route path="clientes/historial" element={<HistorialCliente />} />
         </Route>
 
         <Route element={<RequireAuth allowedRoles={["Admin"]} />}>
@@ -61,6 +64,7 @@ function App() {
           <Route path="productos/compra" element={<ListaCompras />} />
           <Route path="productos/compra/form" element={<FormularioCompra />} />
           <Route path="productos/compra/status" element={<FormularioUpdStatus />} />
+          <Route path="productos/stock" element={<AjusteStock />} />
         </Route>
 
         <Route element={<RequireAuth allowedRoles={["Admin"]} />}>
