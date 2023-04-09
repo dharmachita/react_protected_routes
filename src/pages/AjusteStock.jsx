@@ -7,6 +7,7 @@ import { useLocation,useNavigate } from "react-router-dom";
 const initStock={
     outType:"",
     inType:"",
+    description:"",
     quantity:0
 }
 
@@ -45,6 +46,10 @@ export default function AjusteStock() {
         navigate('/productos/detalle', { state: { id }, replace: true });
     }
 
+    const handleHistorialStock=()=>{
+        navigate('/productos/stock/historial', { state: { id,editProduct }, replace: true });
+    }
+
     return (
         <section>
             <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p>
@@ -78,7 +83,6 @@ export default function AjusteStock() {
                                 value={stock.outType} 
                                 onChange={({target}) => setStock({...stock,outType:target.value})}
                                 defaultValue=""
-                                required
                             >
                                 <option value="">--</option> 
                                 <option value="Nuevo">Nuevo</option> 
@@ -92,7 +96,6 @@ export default function AjusteStock() {
                                 value={stock.inType} 
                                 onChange={({target}) => setStock({...stock,inType:target.value})}
                                 defaultValue=""
-                                required
                             >
                                 <option value="">--</option> 
                                 <option value="Nuevo">Nuevo</option> 
@@ -109,8 +112,18 @@ export default function AjusteStock() {
                                 value={stock.quantity}
                                 required
                             />
-                            <button onClick={handleMoveStock}>Mover/Ajustar</button>
+                            <label htmlFor="description">Motivo</label>
+                            <textarea
+                                type="text"
+                                id="description"
+                                onChange={({target}) => setStock({...stock,description:target.value})}
+                                value={stock.description}
+                                required
+                            />
+                            <button>Mover/Ajustar</button>
                         </form>
+
+                        <button onClick={handleHistorialStock}>Ver Historial de Stock</button>
                     </>
             }
             <br />

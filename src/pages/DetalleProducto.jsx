@@ -48,6 +48,9 @@ export default function DetalleCliente() {
     const handleAjustarStock=()=>{
         navigate('/productos/stock', { state: { id,editProduct:product }, replace: true });
     }
+    const handleHistorialStock=()=>{
+        navigate('/productos/stock/historial', { state: { id,editProduct:product }, replace: true });
+    }
 
     return (
         <section>
@@ -83,6 +86,9 @@ export default function DetalleCliente() {
                         </table>
                         <div className="flexGrow">
                             <button onClick={handleAjustarStock}>Ajustar Stock</button>
+                        </div>
+                        <div className="flexGrow">
+                            <button onClick={handleHistorialStock}>Historial de Stock</button>
                         </div>
                     </>
             }

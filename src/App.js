@@ -27,6 +27,7 @@ import FormularioCompra from './pages/FormularioCompra';
 import FormularioUpdStatus from './pages/FormularioUpdStatus';
 import ListaCompras from './pages/ListaCompras';
 import AjusteStock from './pages/AjusteStock';
+import HistorialStock from './pages/HistorialStock';
 
 import Configuraciones from './pages/Configuraciones';
 import Users from './pages/Users';
@@ -65,6 +66,7 @@ function App() {
           <Route path="productos/compra/form" element={<FormularioCompra />} />
           <Route path="productos/compra/status" element={<FormularioUpdStatus />} />
           <Route path="productos/stock" element={<AjusteStock />} />
+          <Route path="productos/stock/historial" element={<HistorialStock />} />
         </Route>
 
         <Route element={<RequireAuth allowedRoles={["Admin"]} />}>
