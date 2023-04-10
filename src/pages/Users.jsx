@@ -1,12 +1,20 @@
-import { Link } from "react-router-dom"
+import { Link,useNavigate } from "react-router-dom"
 import GetUsers from "../components/GetUsers"
 
-const Configuraciones = () => {
+const Usuarios = () => {
+    const navigate=useNavigate();
+
+    const handleNuevoUsuario=()=>{
+        navigate('/configuraciones/usuarios/formulario', { state: {  }, replace: true });    
+    }
     return (
-        <section>
+        <section className="detalle-venta">
             <h1>Usuarios</h1>
             <br />
+            <div><button onClick={(handleNuevoUsuario)}>Nuevo Usuario</button></div>
+            <br />
             <GetUsers />
+            <br />
             <div className="flexGrow">
                 <Link to="/">Volver al Menú</Link>
             </div>
@@ -14,4 +22,4 @@ const Configuraciones = () => {
     )
 }
 
-export default Configuraciones
+export default Usuarios

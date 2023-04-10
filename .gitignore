@@ -12,6 +12,8 @@
 /build
 
 # misc
+code.bat
+start.bat
 .vscode
 .DS_Store
 .env
@@ -23,3 +25,5 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+

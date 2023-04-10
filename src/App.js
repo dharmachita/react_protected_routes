@@ -35,6 +35,7 @@ import HistorialStock from './pages/HistorialStock';
 import Configuraciones from './pages/Configuraciones';
 import FormularioCatProd from './pages/FormularioCatProd';
 import Users from './pages/Users';
+import FormularioUsuario from './pages/FormularioUsuario';
 
 function App() {
 
@@ -85,10 +86,8 @@ function App() {
         <Route element={<RequireAuth allowedRoles={["Admin"]} />}>
           <Route path="configuraciones" element={<Configuraciones />} />
           <Route path="configuraciones/categorias" element={<FormularioCatProd />} />
-        </Route>
-
-        <Route element={<RequireAuth allowedRoles={["Admin"]} />}>
-          <Route path="users" element={<Users />} />
+          <Route path="configuraciones/usuarios" element={<Users />} />
+          <Route path="configuraciones/usuarios/formulario" element={<FormularioUsuario />} />
         </Route>
 
         {/* catch all */}

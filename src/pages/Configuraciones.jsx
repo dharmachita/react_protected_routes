@@ -8,6 +8,8 @@ const Configuraciones = () => {
             <div>
                 <Link to="categorias">Crear Categoría</Link>
                 <br />
+                <Link to="usuarios">Usuarios</Link>
+                <br />
             </div>
             <div className="flexGrow">
                 <Link to="/">Volver al Menú</Link>
