@@ -11,6 +11,9 @@ import Unauthorized from './pages/Unauthorized';
 import Ventas from './pages/Ventas';
 import FormularioVenta from './pages/FormularioVenta';
 import DetalleVenta from './pages/DetalleVenta';
+import ListaVentas from './pages/ListaVentas';
+import AnularVenta from './pages/AnularVenta';
+import CobrarCuota from './pages/CobrarCuota';
 
 import Clientes from './pages/Clientes';
 import FormularioCliente from './pages/FormularioCliente';
@@ -30,6 +33,7 @@ import AjusteStock from './pages/AjusteStock';
 import HistorialStock from './pages/HistorialStock';
 
 import Configuraciones from './pages/Configuraciones';
+import FormularioCatProd from './pages/FormularioCatProd';
 import Users from './pages/Users';
 
 function App() {
@@ -71,17 +75,22 @@ function App() {
 
         <Route element={<RequireAuth allowedRoles={["Admin"]} />}>
           <Route path="ventas" element={<Ventas />} />
+          <Route path="ventas/lista" element={<ListaVentas />} />
           <Route path="ventas/nuevo" element={<FormularioVenta />} />
           <Route path="ventas/detalle" element={<DetalleVenta />} />
+          <Route path="ventas/anular" element={<AnularVenta />} />
+          <Route path="ventas/cobrar" element={<CobrarCuota />} />
         </Route>
 
         <Route element={<RequireAuth allowedRoles={["Admin"]} />}>
           <Route path="configuraciones" element={<Configuraciones />} />
+          <Route path="configuraciones/categorias" element={<FormularioCatProd />} />
         </Route>
 
         <Route element={<RequireAuth allowedRoles={["Admin"]} />}>
           <Route path="users" element={<Users />} />
         </Route>
+
         {/* catch all */}
         <Route path="*" element={<Missing />} />
       </Route>

@@ -14,7 +14,7 @@ const GetUsers = () => {
 
         const getUsers = async () => {
             try {
-                const response = await axiosPrivate.get('/users', {
+                const response = await axiosPrivate.get('/users?isActive=1', {
                     signal: controller.signal
                 });
                 console.log(response.data);
@@ -51,7 +51,7 @@ const GetUsers = () => {
                             )}
                         )}
                     </ul>
-                ) : <p>No users to display</p>
+                ) : <p>No hay usuarios para mostrar</p>
             }
         </article>
     );

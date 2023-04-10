@@ -38,8 +38,6 @@ const Login = () => {
                     withCredentials: true
                 }
             );
-            //console.log(JSON.stringify(response?.data));
-            //console.log(JSON.stringify(response));
             const accessToken = response?.data?.data?.token;
             const roles = response?.data?.data?.user?.Roles.map(rol=>rol.name);
             setAuth({ user, pwd, roles, accessToken });
@@ -49,7 +47,6 @@ const Login = () => {
         } catch (err) {
             if (!err?.response) {
                 setErrMsg('El Servidor no responde');
-                //console.log(err)
             } else if (err.response?.status === 400 | err.response?.status === 401) {
                 setErrMsg('Usuario o Contraseña inválidos');
             } else {

@@ -5,7 +5,10 @@ const Configuraciones = () => {
         <section>
             <h1>Configuraciones</h1>
             <br />
-            <p>Página de configuraciones</p>
+            <div>
+                <Link to="categorias">Crear Categoría</Link>
+                <br />
+            </div>
             <div className="flexGrow">
                 <Link to="/">Volver al Menú</Link>
             </div>
