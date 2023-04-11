@@ -6,8 +6,9 @@ import { Link,useNavigate } from 'react-router-dom';
 
 export default function ListaCuotas() {
     const errRef = useRef();
-    const [products, setProducts] = useState([]);
+    const [cuotas, setCuotas] = useState([]);
     const axiosPrivate = useAxiosPrivate();
+    const [days, setDays] = useState(10);
     const [errMsg, setErrMsg] = useState('');
     const navigate=useNavigate();
     //const [id, setId] = useState('');
@@ -17,80 +18,91 @@ export default function ListaCuotas() {
         let isMounted = true;
         const controller = new AbortController();
 
-        const getCustomers = async () => {
+        const getCuotas = async () => {
             try {
-                const response = await axiosPrivate.get('/products', {
+                const response = await axiosPrivate.get(`/installments/impago?limit=${days}`, {
                     signal: controller.signal
                 });
-                isMounted && setProducts(response.data.data);
+                isMounted && setCuotas(response.data.data);
             } catch (err) {
                 console.log(err)
-                setErrMsg('Error buscando productos');
+                setErrMsg('Error buscando cuotas');
                 //navigate('/login', { state: { from: location }, replace: true });
             }
         }
 
-        getCustomers();
+        getCuotas();
 
         return () => {
             isMounted = false;
             controller.abort();
         }
     // eslint-disable-next-line
-    }, [])
+    }, [days])
 
-    const handleDelete=async(id)=>{
-        let isMounted = true;
-        const controller = new AbortController();
-        try {
-            await axiosPrivate.delete(`/products/${id}`, {
-                signal: controller.signal
-            });
-            isMounted && setProducts(products.filter(product => product.id !== id));
-        } catch (err) {
-            console.log(err)
-            setErrMsg('Error buscando clientes');
-            //navigate('/login', { state: { from: location }, replace: true });
+    const handleDate=(convertDate)=>{
+        if(convertDate){
+            const splittedDate=convertDate.split('-');
+            return `${splittedDate[2].slice(0,2)}-${splittedDate[1]}-${splittedDate[0]}`
         }
     }
 
-    const handleDetail=(id)=>{
-        navigate('/productos/detalle', { state: { id }, replace: true });
-    }
+    const handleCobrar=(ins)=>{
+        navigate('/ventas/cobrar', { state: { installment:ins }, replace: true });
+     }
 
     return (
+        <section className='detalle-venta'>
         <article>
             <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p>
-            <h2>Lista de Productos</h2>
+            <h2>Lista de Cuotas Impagas</h2>
+            <br />
+            <div>
+                <label htmlFor="days" className='padding'>Cantidad de Días</label>
+                <input
+                    type="number"
+                    id="days"
+                    autoComplete="off"
+                    onChange={({target}) => setDays(target.value)}
+                    value={days}
+                    required
+                />
+            </div> 
+            <br />
             <table>
-              <thead>
-                <tr>
-                  <th>Código</th>
-                  <th>Producto</th>
-                  <th>Descripción</th>
-                  <th>Categoría</th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody>
-                {products?.map((product,i)=>
-                    <tr key={i}>
-                      <th>{product?.code}</th>
-                      <th>{product?.name}</th>
-                      <th>{product?.description}</th>
-                      <th>{product?.Category.name}</th>
-                      <th>
-                        <button className='actionbutton' onClick={()=>handleDetail(product.id)}>Ver</button>
-                        <button className='actionbutton' onClick={()=>handleDelete(product.id)}>Eliminar</button>
-                    </th>
+                <thead>
+                    <tr>
+                        <th>Fecha</th>
+                        <th>Monto</th>
+                        <th>Status</th>
+                        <th>Cobrador</th>
+                        <th>Vendedor</th>
+                        <th>Producto</th>
+                        <th>Cliente</th>
+                        <th></th>
                     </tr>
-                  )}
-              </tbody>
+                </thead>
+                <tbody>
+                    {cuotas.map((ins,i)=>
+                        <tr key={i}>
+                            <th>{handleDate(ins?.dueDate)}</th>
+                            <th>{ins?.amount}</th>
+                            <th>{ins?.status}</th>
+                            <th>{ins?.User?.name}</th>
+                            <th>{ins?.Order?.User?.name}</th>
+                            <th>{ins?.Order?.Product?.name}</th>
+                            <th>{ins?.Order?.Customer?.name}</th>
+                            <th><button onClick={()=>handleCobrar(ins)} className='actionbutton'>Cobrar</button></th>
+                        </tr>
+                    )}
+                </tbody>
             </table>
+            <br />
             <div className="flexGrow">
                 <Link to="/">Volver al Menú</Link>
             </div>
         </article>
+        </section>
     );
 
 }

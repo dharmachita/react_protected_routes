@@ -4,126 +4,89 @@ import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import { Link } from 'react-router-dom';
 import { useLocation,useNavigate } from "react-router-dom";
 
-const initStock={
-    outType:"",
-    inType:"",
-    description:"",
-    quantity:0
+const initPay={
+    amountPaid:"",
+    paidDate:""
 }
 
 export default function CobrarCuota() {
     const errRef = useRef();
     const axiosPrivate = useAxiosPrivate();
     const [errMsg, setErrMsg] = useState('');
-    const [stock, setStock] = useState(initStock);
+    const [message, setMessage] = useState();
     const {state} = useLocation();
-    const { id,editProduct } = state; 
+    const { id,installment } = state; 
+    const [pay, setPay] = useState({...initPay,amountPaid:installment.amount});
     const navigate=useNavigate();
     
-    const handleMoveStock=async(e)=>{
+    const handlePay=async(e)=>{
         e.preventDefault();
         try {
-            if(stock.inType===""){
-                delete stock.inType;
-            }
-            if(stock.outType===""){
-                delete stock.outType;
-            }
-            await axiosPrivate.put(`/products/${id}/stock`,
-            JSON.stringify(stock)
+            await axiosPrivate.put(`/installments/${installment.id}`,
+            JSON.stringify(pay)
         );      
         } catch (error) {
             if (!error?.response) {
                 setErrMsg('El Servidor no responde');
-                //console.log(err)
             } else if (error.response?.status === 400 | error.response?.status === 401) {
-                setErrMsg('Error al actualizar stock');
+                setErrMsg('Error al cobrar cuota');
             } else {
-                setErrMsg('Error al actualizar stock');
+                setErrMsg('Error al cobrar cuota');
             }
             errRef.current.focus();   
         }
-        navigate('/productos/detalle', { state: { id }, replace: true });
+        setMessage("Cuota cobrada");   
+        setTimeout(() => {
+            id?navigate('/ventas/detalle', { state: { id }, replace: true }):navigate('/ventas/cuotas', { state: { }, replace: true }); 
+        }, 2000);
+        
     }
-
-    const handleHistorialStock=()=>{
-        navigate('/productos/stock/historial', { state: { id,editProduct }, replace: true });
+    const handleDate=(convertDate)=>{
+        if(convertDate){
+            const splittedDate=convertDate.split('-');
+            return `${splittedDate[2].slice(0,2)}-${splittedDate[1]}-${splittedDate[0]}`
+        }
     }
-
     return (
         <section>
             <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p>
-            <h2>Ajustar Stock del Producto: {editProduct&&editProduct?.code} - {editProduct&&editProduct?.name}</h2>
+            <p ref={errRef} className={message ? "code" : "offscreen"} aria-live="assertive">{message}</p>
+            <h2>Cobrar Cuota</h2>
             <br />
             {
-                editProduct&&
+                installment&&
                     <>
-                        <table>
-                            <caption>Stock Actual</caption>
-                            <thead>
-                                <tr>
-                                    <th>Tipo Stock</th>
-                                    <th>Cantidad</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {editProduct?.Stocks.map((stock,i)=>
-                                    <tr key={i}>
-                                        <th>{stock.type}</th>
-                                        <th>{stock.quantity}</th>
-                                    </tr>
-                                )}
-                            </tbody>
-                        </table>
+                    <div>
+                        <p>N° cuota: {installment?.number}</p>
+                        <p>Fecha: {handleDate(installment?.dueDate)}</p>
+                        <p>Valor: {installment?.amount}</p>
+                        <p>Fecha Pagada: {handleDate(installment?.paidDate)}</p>
+                        <p>Valor Pagado: {installment?.amountPaid}</p>
+                        <p>Status: {installment?.status}</p>
+                        <p>Cobrador: {installment?.User?.name}</p>
+                    </div>
                         <br />
-                        <form onSubmit={handleMoveStock}>
-                            <p>Stock de Salida</p>
-                            <select 
-                                id="outType"
-                                value={stock.outType} 
-                                onChange={({target}) => setStock({...stock,outType:target.value})}
-                                defaultValue=""
-                            >
-                                <option value="">--</option> 
-                                <option value="Nuevo">Nuevo</option> 
-                                <option value="Devuelto">Devuelto</option>
-                                <option value="Roto">Roto</option>  
-                            </select>
-                            <br />
-                            <p>Stock de Entrada</p>
-                            <select 
-                                id="inType"
-                                value={stock.inType} 
-                                onChange={({target}) => setStock({...stock,inType:target.value})}
-                                defaultValue=""
-                            >
-                                <option value="">--</option> 
-                                <option value="Nuevo">Nuevo</option> 
-                                <option value="Devuelto">Devuelto</option>
-                                <option value="Roto">Roto</option>  
-                            </select>
-                            <label htmlFor="quantity">Cantidad</label>
+                        <form onSubmit={handlePay}>
+                            <label htmlFor="amountPaid">Monto Cobrado</label>
                             <input
                                 type="number"
-                                id="quantity"
-                                //ref={userRef}
+                                id="amountPaid"
                                 autoComplete="off"
-                                onChange={({target}) => setStock({...stock,quantity:target.value})}
-                                value={stock.quantity}
+                                onChange={({target}) => setPay({...pay,amountPaid:target.value})}
+                                value={pay.amountPaid}
                                 required
                             />
-                            <label htmlFor="description">Motivo</label>
-                            <textarea
-                                type="text"
-                                id="description"
-                                onChange={({target}) => setStock({...stock,description:target.value})}
-                                value={stock.description}
+                            <label htmlFor="paidDate">Fecha de Cobro</label>
+                            <input
+                                type="date"
+                                id="paidDate"
+                                autoComplete="off"
+                                onChange={({target}) => setPay({...pay,paidDate:target.value})}
+                                value={pay.paidDate}
                                 required
                             />
-                            <button>Mover/Ajustar</button>
+                            <button>Cobrar</button>
                         </form>
-
-                        <button onClick={handleHistorialStock}>Ver Historial de Stock</button>
                     </>
             }
             <br />

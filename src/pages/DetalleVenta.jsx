@@ -50,7 +50,7 @@ export default function DetalleVenta() {
     }
 
     const handleCobrar=(ins)=>{
-        navigate('/ventas/cobrar', { state: { installment:ins }, replace: true });
+        navigate('/ventas/cobrar', { state: { id:order.id,installment:ins }, replace: true });
      }
 
     return (

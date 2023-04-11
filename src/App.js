@@ -36,6 +36,7 @@ import Configuraciones from './pages/Configuraciones';
 import FormularioCatProd from './pages/FormularioCatProd';
 import Users from './pages/Users';
 import FormularioUsuario from './pages/FormularioUsuario';
+import ListaCuotas from './pages/ListaCuotas';
 
 function App() {
 
@@ -81,6 +82,7 @@ function App() {
           <Route path="ventas/detalle" element={<DetalleVenta />} />
           <Route path="ventas/anular" element={<AnularVenta />} />
           <Route path="ventas/cobrar" element={<CobrarCuota />} />
+          <Route path="ventas/cuotas" element={<ListaCuotas />} />
         </Route>
 
         <Route element={<RequireAuth allowedRoles={["Admin"]} />}>
