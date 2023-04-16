@@ -63,7 +63,7 @@ export default function DetalleVenta() {
                     <>
                         <p>Producto: {order?.Product?.code} - {order?.Product?.name}</p>
                         <p>Cliente: {order?.Customer?.code} - {order?.Customer?.name}</p>
-                        <p>Vendedor: {order?.Customer?.name}</p>
+                        <p>Vendedor: {order?.User?.name}</p>
                         <p>Fecha de Venta: {handleDate(order?.orderDate)}</p>
                         <p>Estado: {order?.status}</p>
                         <p>Cantidad: {order?.quantity}</p>

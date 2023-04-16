@@ -12,7 +12,7 @@
 /build
 
 # misc
-code.bat
+vscode.bat
 start.bat
 .vscode
 .DS_Store

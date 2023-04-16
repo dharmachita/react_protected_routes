@@ -87,7 +87,7 @@ export default function FormularioUsuario() {
                 <input
                     type="text"
                     id="username2"
-                    autocomplete="off"
+                    autoComplete="off"
                     onChange={({target}) => setUser({...user,username:target.value})}
                     value={user.username}
                     required
@@ -97,7 +97,7 @@ export default function FormularioUsuario() {
                 <input
                     type="text"
                     id="name2"
-                    autocomplete="off"
+                    autoComplete="off"
                     onChange={({target}) => setUser({...user,name:target.value})}
                     value={user.name}
                     required
@@ -106,7 +106,7 @@ export default function FormularioUsuario() {
                 <input
                     type="password"
                     id="password2"
-                    autocomplete="off"
+                    autoComplete="off"
                     onChange={({target}) => setUser({...user,password:target.value})}
                     value={user.password}
                     required

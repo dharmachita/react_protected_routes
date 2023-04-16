@@ -207,7 +207,8 @@ export default function FormularioVenta() {
                     onChange={({target}) => handleTotalPrice(target)}
                     required
                 >
-                    <option value="0"> - - - </option>
+                    <option value=""> - - - </option>
+                    <option value="0"> 0 </option>
                     <option value="6"> 6 </option>
                     <option value="12"> 12 </option>
                     <option value="18"> 18 </option>
